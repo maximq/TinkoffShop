@@ -24,8 +24,6 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:1.5.2")
     compileOnly ("org.projectlombok:lombok:1.18.26")
     annotationProcessor ("org.projectlombok:lombok:1.18.26")
-    implementation ("org.liquibase:liquibase-core:4.16.0")
-
     testCompileOnly ("org.projectlombok:lombok:1.18.26")
     testAnnotationProcessor ("org.projectlombok:lombok:1.18.26")
 }
