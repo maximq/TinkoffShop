@@ -24,6 +24,13 @@ public class Product {
 
     private int remainder;
 
+    public Product(String name, double price, ProductType productType) {
+        this.name = name;
+        this.price = price;
+        this.productType = productType;
+        this.remainder = 1;
+    }
+
 
     @Override
     public String toString() {

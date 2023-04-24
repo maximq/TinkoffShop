@@ -1,38 +1,26 @@
 package org.example.entity;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name="orders")
+@Setter
+@Getter
+@RequiredArgsConstructor
 public class Order {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Long authorId;
     private Long productId;
 
-    public Order(Long id, Long authorId, Long productId) {
-        this.id = id;
+    public Order(Long authorId, Long productId) {
         this.authorId = authorId;
-        this.productId = productId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
         this.productId = productId;
     }
 

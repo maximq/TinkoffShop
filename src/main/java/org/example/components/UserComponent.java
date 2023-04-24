@@ -1,38 +1,40 @@
 package org.example.components;
 
 import org.example.entity.User;
+import org.example.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@Component
 public class UserComponent {
-    private static List<User> listOfUsers = new ArrayList<>();
+    @Autowired
+    UserRepository userRepository;
 
-    public static User getOrCreateUser(String name, String phone) {
-        for (User user : listOfUsers) {
-            if (user.getPhone().equals(phone)) {
-                return user;
-            }
+    public User getOrCreateUser(String name, String phone) {
+        var user = userRepository.findByPhone(phone);
+        if (user != null) {
+            return user;
         }
-        var newUser = new User(listOfUsers.size()+1L, name, phone);
-        listOfUsers.add(newUser);
+        var newUser = new User(name, phone);
+        userRepository.save(newUser);
         return newUser;
     }
-    public static List<User> getAllUsers() {
-        return listOfUsers;
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public static User getUserByPhone(String phone) {
-        for (User user : listOfUsers) {
-            if (user.getPhone().equals(phone)) {
-                return user;
-            }
+    public User getUserByPhone(String phone) {
+        var user = userRepository.findByPhone(phone);
+        if (user != null) {
+            return user;
         }
+
         throw new NoSuchElementException(
                 String.format(
-                        "Пользователя с телефоном '%s' не существует!", phone
-                )
-        );
+                        "Пользователя с телефоном '%s' не существует!", phone));
     }
 }

@@ -43,13 +43,5 @@ public class Main {
     public static void main(String[] args) {
 
 
-
-        UserComponent.getOrCreateUser("Oleg", "+7998");
-        UserComponent.getOrCreateUser("Maksim", "+7990");
-
-        System.out.println(UserComponent.getAllUsers());
-
-
-        System.out.println(OrderComponent.getListOfOrders());
     }
 }
