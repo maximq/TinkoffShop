@@ -42,18 +42,13 @@ import org.example.components.*;
 public class Main {
     public static void main(String[] args) {
 
-        ServeComponent.addNewServe("rent-a-gent", 1200);
-        GoodsComponent.addNewGoods("water", 100);
-        GoodsComponent.addNewGoods("water", 110);
 
-        System.out.println(ProductComponent.getListOfProducts());
 
         UserComponent.getOrCreateUser("Oleg", "+7998");
         UserComponent.getOrCreateUser("Maksim", "+7990");
 
         System.out.println(UserComponent.getAllUsers());
 
-        OrderComponent.createOrder("Oleg", "+7998", "water");
 
         System.out.println(OrderComponent.getListOfOrders());
     }

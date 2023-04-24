@@ -1,6 +1,5 @@
 package org.example.components;
 
-import org.example.entity.Goods;
 import org.example.entity.Order;
 
 import java.util.ArrayList;
@@ -25,25 +24,5 @@ public class OrderComponent {
         return usersOrders;
     }
 
-    public static Order createOrder(String userName,
-                                    String userPhone,
-                                    String productName) {
-        var user = UserComponent.getOrCreateUser(userName, userPhone);
-        var product = ProductComponent.getProductByName(productName);
 
-        if (product instanceof Goods) {
-            Goods goods = (Goods) product;
-            if (goods.getRemainder() < 1) {
-                throw new IllegalStateException(
-                        String.format(
-                                "Товаров '%s' не осталось", productName
-                        )
-                );
-            }
-            goods.setRemainder(goods.getRemainder() - 1);
-        }
-        var order = new Order(listOfOrders.size()+1L, user.getId(), product.getId());
-        listOfOrders.add(order);
-        return order;
-    }
 }

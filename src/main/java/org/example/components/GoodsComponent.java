@@ -1,11 +1,10 @@
 package org.example.components;
 
-import org.example.entity.Goods;
 import org.example.entity.Product;
 
 public class GoodsComponent {
 
-    public static Product addNewGoods(String name, double price) {
+    /*public static Product addNewGoods(String name, double price) {
         for (Product product : ProductComponent.getListOfProducts()) {
             if (product.getName().equals(name)) {
                 if (!(product instanceof Goods)) {
@@ -30,5 +29,5 @@ public class GoodsComponent {
         );
         ProductComponent.addProductToList(newGoods);
         return newGoods;
-    }
+    }*/
 }

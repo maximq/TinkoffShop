@@ -1,33 +1,29 @@
 package org.example.entity;
 
-abstract public class Product {
-    protected Long id;
-    protected String name;
-    protected double price;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.example.enums.ProductType;
 
-    public Long getId() {
-        return id;
-    }
+import javax.persistence.*;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+@Entity
+@Table(name="products")
+@Getter
+@Setter
+@RequiredArgsConstructor
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+    private String name;
+    private double price;
 
-    public String getName() {
-        return name;
-    }
+    @Enumerated(EnumType.STRING)
+    private ProductType productType;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    private int remainder;
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     @Override
     public String toString() {

@@ -1,11 +1,10 @@
 package org.example.components;
 
 import org.example.entity.Product;
-import org.example.entity.Serve;
 
 public class ServeComponent {
 
-    public static Product addNewServe(String name, double price) {
+    /*public static Product addNewServe(String name, double price) {
         for (Product product : ProductComponent.getListOfProducts()) {
             if (product.getName().equals(name)) {
                 throw new IllegalArgumentException(
@@ -21,5 +20,5 @@ public class ServeComponent {
         );
         ProductComponent.addProductToList(serve);
         return serve;
-    }
+    }*/
 }

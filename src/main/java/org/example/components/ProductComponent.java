@@ -1,29 +1,29 @@
 package org.example.components;
 
 import org.example.entity.Product;
+import org.example.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+@Component
 public class ProductComponent {
 
-    private static List<Product> listOfProducts = new ArrayList();
+    @Autowired
+    ProductRepository productRepository;
 
-    public static List<Product> getListOfProducts() {
-        return listOfProducts;
+    public List<Product> getListOfProducts() {
+        return productRepository.findAll();
     }
 
-    public static void addProductToList(Product product) {
-        listOfProducts.add(product);
-    }
-
-    public static Product getProductByName(String name) {
-        for (Product listOfProduct : listOfProducts) {
-            if (Objects.equals(listOfProduct.getName(), name)) {
-                return listOfProduct;
-            }
+    public Product getProductByName(String name) {
+        var product = productRepository.findByName(name);
+        if (product != null ){
+            return  product;
         }
         throw new NoSuchElementException(
                 String.format("Продукта с именем '%s' нет!", name
