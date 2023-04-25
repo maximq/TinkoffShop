@@ -1,5 +1,6 @@
 package org.example.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -9,8 +10,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="products")
-@Getter
-@Setter
+@Data
 @RequiredArgsConstructor
 public class Product {
     @Id
