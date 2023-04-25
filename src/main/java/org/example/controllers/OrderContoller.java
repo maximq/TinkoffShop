@@ -18,8 +18,7 @@ public class OrderContoller {
     @GetMapping("byUserPhone")
     @Operation(summary = "Получение заказов пользователя по номеру телефона")
     public List<Order> getAllUsers(
-            @RequestParam String phone
-    ) {
+            @RequestParam String phone) {
         return orderComponent.getListOfOrdersByUser(phone);
     }
 
