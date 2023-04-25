@@ -6,6 +6,7 @@ import org.example.repositories.OrderRepository;
 import org.example.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,6 @@ public class OrderComponent {
         return orderRepository.findByAuthorId(user.getId());
 
     }
-
-
 
     /*
     перепиши меня !

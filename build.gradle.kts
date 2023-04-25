@@ -26,6 +26,7 @@ dependencies {
     annotationProcessor ("org.projectlombok:lombok:1.18.26")
     testCompileOnly ("org.projectlombok:lombok:1.18.26")
     testAnnotationProcessor ("org.projectlombok:lombok:1.18.26")
+    testImplementation("io.rest-assured:rest-assured:4.3.3")
 }
 
 tasks.test {

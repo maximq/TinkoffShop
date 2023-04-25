@@ -6,10 +6,8 @@ import org.example.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @Component
 public class ProductComponent {
@@ -23,8 +21,8 @@ public class ProductComponent {
 
     public Product getProductByName(String name) {
         var product = productRepository.findByName(name);
-        if (product != null ){
-            return  product;
+        if (product != null) {
+            return product;
         }
         throw new NoSuchElementException(
                 String.format("Продукта с именем '%s' нет!", name
@@ -36,16 +34,15 @@ public class ProductComponent {
 
         var product = productRepository.findByName(name);
 
-        if (product == null){
+        if (product == null) {
             Product productNew = new Product(name, price, ProductType.GOOD);
             productRepository.save(productNew);
             return productNew;
         }
 
-        if (product.getProductType() == ProductType.GOOD)
-        {
+        if (product.getProductType() == ProductType.GOOD) {
             product.setPrice(price);
-            product.setRemainder(product.getRemainder()+1);
+            product.setRemainder(product.getRemainder() + 1);
             productRepository.save(product);
             return product;
         }
@@ -58,7 +55,7 @@ public class ProductComponent {
 
     public Product addNewServe(String name, double price) {
         var product = productRepository.findByName(name);
-        if (product!=null) {
+        if (product != null) {
             throw new IllegalArgumentException(
                     String.format("Товар с именем '%s' уже существует", name
                     )
