@@ -28,4 +28,10 @@ public class ProductController {
         return productComponent.addNewGoods(name, price);
     }
 
+    @DeleteMapping("deleteProductById")
+    @Operation(summary = "Удаление товара")
+    public void deleteProduct(@RequestParam Long id) {
+        productComponent.deleteProductById(id);
+    }
+
 }

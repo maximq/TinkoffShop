@@ -37,4 +37,9 @@ public class UserComponent {
                 String.format(
                         "Пользователя с телефоном '%s' не существует!", phone));
     }
+
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
+
+    }
 }

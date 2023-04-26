@@ -4,9 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.example.components.OrderComponent;
 import org.example.entity.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,9 +20,20 @@ public class OrderController {
         return orderComponent.getListOfOrdersByUser(phone);
     }
 
-    /**
-     * createOrder(userName,userPhone,userProduct) -реализуй меня , используй метод POST
-     */
+    @PostMapping("createOrder")
+    @Operation(summary = "Добавление нового заказа")
+    public Order createOrder(
+            @RequestParam String userName,
+            @RequestParam String userPhone,
+            @RequestParam String productName) {
+        return orderComponent.createOrder(userName,userPhone, productName);
+    }
+
+    @DeleteMapping("deleteOrderById")
+    @Operation(summary = "Удаление заказа")
+    public void deleteOrder(@RequestParam Long id) {
+        orderComponent.deleteOrderById(id);
+    }
 
 
 }

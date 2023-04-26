@@ -6,9 +6,7 @@ import org.example.repositories.OrderRepository;
 import org.example.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -36,27 +34,31 @@ public class OrderComponent {
 
     }
 
-    /*
-    перепиши меня !
-    public static Order createOrder(String userName,
-                                    String userPhone,
-                                    String productName) {
-        var user = UserComponent.getOrCreateUser(userName, userPhone);
-        var product = ProductComponent.getProductByName(productName);
+    public void deleteOrderById(Long id) {
+        orderRepository.deleteById(id);
 
-        if (product instanceof Goods) {
-            Goods goods = (Goods) product;
-            if (goods.getRemainder() < 1) {
+    }
+
+    public Order createOrder(String userName,
+                             String userPhone,
+                             String productName) {
+        var user = userComponent.getOrCreateUser(userName, userPhone);
+        var product = productComponent.getProductByName(productName);
+
+        if (product.getProductType() == ProductType.GOOD) {
+            if (product.getRemainder() < 1) {
                 throw new IllegalStateException(
                         String.format(
                                 "Товаров '%s' не осталось", productName
                         )
                 );
             }
-            goods.setRemainder(goods.getRemainder() - 1);
+            product.setRemainder(product.getRemainder() - 1);
+            productRepository.save(product);
         }
-        var order = new Order(listOfOrders.size()+1L, user.getId(), product.getId());
-        listOfOrders.add(order);
+        var order = new Order(user.getId(), product.getId());
+        orderRepository.save(order);
         return order;
-    }*/
+    }
+
 }
