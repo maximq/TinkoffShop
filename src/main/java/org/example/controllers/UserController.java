@@ -5,6 +5,8 @@ import org.example.components.UserComponent;
 import org.example.entity.User;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +34,13 @@ public class UserController {
     @Operation(summary = "Удаление пользователя")
     public void deleteUser(@RequestParam Long id) {
         userComponent.deleteUserById(id);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorMessage> handleException(NoSuchElementException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage(exception.getMessage()));
     }
 
 }

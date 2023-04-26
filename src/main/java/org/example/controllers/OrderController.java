@@ -3,10 +3,14 @@ package org.example.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import org.example.components.OrderComponent;
 import org.example.entity.Order;
+import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class OrderController {
@@ -35,5 +39,11 @@ public class OrderController {
         orderComponent.deleteOrderById(id);
     }
 
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorMessage> handleException(NoSuchElementException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage(exception.getMessage()));
+    }
 
 }

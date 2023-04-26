@@ -1,12 +1,17 @@
 package org.example.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.SneakyThrows;
 import org.example.components.ProductComponent;
 import org.example.entity.Product;
+import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class ProductController {
@@ -19,6 +24,12 @@ public class ProductController {
         return productComponent.getListOfProducts();
     }
 
+    @GetMapping("byProductName")
+    @Operation(summary = "Получение товара по имени")
+    public Product getProductByName (
+            @RequestParam String productName){
+        return productComponent.getProductByName(productName);
+    }
 
     @PutMapping("createProduct")
     @Operation(summary = "Добавление товара")
@@ -33,5 +44,14 @@ public class ProductController {
     public void deleteProduct(@RequestParam Long id) {
         productComponent.deleteProductById(id);
     }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ErrorMessage> handleException(NoSuchElementException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage(exception.getMessage()));
+    }
+
+
 
 }
