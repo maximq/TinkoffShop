@@ -1,7 +1,6 @@
 package org.example.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
-import lombok.SneakyThrows;
 import org.example.components.ProductComponent;
 import org.example.entity.Product;
 import org.springdoc.api.ErrorMessage;
@@ -49,6 +48,13 @@ public class ProductController {
     public ResponseEntity<ErrorMessage> handleException(NoSuchElementException exception) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage(exception.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorMessage> handleException(IllegalArgumentException exception) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(new ErrorMessage(exception.getMessage()));
     }
 
