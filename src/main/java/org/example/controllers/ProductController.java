@@ -31,9 +31,9 @@ public class ProductController {
         return productComponent.getProductByName(productName);
     }
 
-    @PutMapping("createProduct")
+    @PutMapping("createGood")
     @Operation(summary = "Добавление товара")
-    public Product createProduct(
+    public Product createGood(
             @RequestParam String name,
             @RequestParam double price) {
         return productComponent.addNewGoods(name, price);
