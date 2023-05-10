@@ -26,7 +26,7 @@ public class SuccessCreateServeTest {
 
 
         //TEST
-        var pathCreateServe = "/createGood?name=" + productName + "&price=" + productPrice;
+        var pathCreateServe = "/createServe?name=" + productName + "&price=" + productPrice;
         var responseCreateServe = TestUtils.callPut(pathCreateServe).assertThat().statusCode(200);
 
         var nameProduct = responseCreateServe.extract().body().path("name");
