@@ -38,6 +38,14 @@ public class ProductController {
         return productComponent.addNewGoods(name, price);
     }
 
+    @PutMapping("createServe")
+    @Operation(summary = "Добавление услуги")
+    public Product createServe(
+            @RequestParam String name,
+            @RequestParam double price) {
+        return productComponent.addNewServe(name, price);
+    }
+
     @DeleteMapping("deleteProductById")
     @Operation(summary = "Удаление товара")
     public void deleteProduct(@RequestParam Long id) {
