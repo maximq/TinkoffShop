@@ -1,6 +1,8 @@
+import org.example.components.AccountComponent;
 import org.example.components.OrderComponent;
 import org.example.components.ProductComponent;
 import org.example.components.UserComponent;
+import org.example.repositories.AccountRepository;
 import org.example.repositories.OrderRepository;
 import org.example.repositories.ProductRepository;
 import org.example.repositories.UserRepository;
@@ -34,6 +36,12 @@ public class OrderComponentTest extends AbstractTest {
     @Autowired
     OrderComponent orderComponent;
 
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
+    AccountComponent accountComponent;
+
     @BeforeEach
     void setup() {
         orderRepository.deleteAll();
@@ -54,6 +62,8 @@ public class OrderComponentTest extends AbstractTest {
         var price = 100;
 
         var product = productComponent.addNewGoods(productName, price);
+        var account = accountComponent.getOrCreateAccount(userComponent.getOrCreateUser(userName, userPhone).getId());
+        var startBalance = account.getBalance();
 
         //TEST
         var createdOrder = orderComponent.createOrder(userName, userPhone, productName);
@@ -69,6 +79,9 @@ public class OrderComponentTest extends AbstractTest {
         assertThat(user.get().getPhone()).isNotEmpty();
         assertThat(user.get().getName()).isNotEmpty();
         assertThat(product.getId()).isEqualTo(productId);
+        assertThat(startBalance).isEqualTo(
+                startBalance+accountComponent.getOrCreateAccount(userComponent.getOrCreateUser(userName, userPhone).getId()).getBalance()
+        );
     }
 
     @Test
@@ -79,5 +92,38 @@ public class OrderComponentTest extends AbstractTest {
         );
 
         assertThat(error.getMessage()).isEqualTo("Продукта с именем '%s' нет!", productName);
+    }
+
+    @Test
+    void errorWhenTryToCreatedWithoutEnoughBalance() {
+        //PRECONDITION
+        var userName = "maxim";
+        var userPhone = "12345";
+        var productName = "Milk";
+        var price = 100;
+
+        var product = productComponent.addNewGoods(productName, price);
+        var startRemainder = product.getRemainder();
+
+        var account = accountComponent.getOrCreateAccount(
+                userComponent.getOrCreateUser(userName, userPhone).getId()
+        );
+        account.setBalance(price-1);
+        accountRepository.save(account);
+
+        //TEST
+        var error = assertThrows(UnsupportedOperationException.class,
+                () -> orderComponent.createOrder(userName,userPhone,productName)
+        );
+
+        //ASSERTS
+
+        assertThat(error.getMessage()).isEqualTo(
+                String.format(
+                        "Недостаточно средств на аккаунте '%s', текущий баланс '%s'",
+                        account.getUserId(), account.getBalance()
+                )
+        );
+        assertThat(product.getRemainder()).isEqualTo(startRemainder);
     }
 }
