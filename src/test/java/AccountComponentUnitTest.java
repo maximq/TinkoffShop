@@ -17,7 +17,7 @@ import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
 
-public class OrderComponentUnitTest extends AbstractTest{
+public class AccountComponentUnitTest extends AbstractTest{
     @Mock
     UserRepository userRepository;
 
@@ -34,45 +34,27 @@ public class OrderComponentUnitTest extends AbstractTest{
     OrderRepository orderRepository;
 
     @Mock
-    AccountComponent accountComponent;
-
-    @Mock
     AccountRepository accountRepository;
 
     @InjectMocks
-    OrderComponent orderComponent;
+    AccountComponent accountComponent;
 
     @Test
     void createOrderUnitTest() {
         //PRECONDITION
         var userName = "Oleg";
         var userPhone = "+79990001234";
-        var productName = "Milk";
-        var price = 100;
 
         var user = new User();
         user.setPhone(userPhone);
         user.setName(userName);
 
-        var product = new Product();
-        product.setId(1L);
-        product.setName(productName);
-        product.setPrice(price);
-        product.setProductType(ProductType.GOOD);
-        product.setRemainder(1);
-
-        var account = new Account();
-        account.setId(1L);
-        account.setUserId(user.getId());
-        account.setBalance(100);
 
         Mockito.when(userComponent.getOrCreateUser(userName, userPhone)).thenReturn(user);
-        Mockito.when(productComponent.getProductByName(productName)).thenReturn(product);
-        Mockito.when(accountComponent.getOrCreateAccount(user.getId())).thenReturn(account);
 
-        orderComponent.createOrder(userName, userPhone, productName);
+        accountComponent.getOrCreateAccount(user.getId());
+        accountComponent.accountRefill(user.getId(), 100);
 
-        Mockito.verify(orderRepository, Mockito.times(1)).save(any());
-        Mockito.verify(accountRepository, Mockito.times(1)).save(any());
+        Mockito.verify(accountRepository, Mockito.times(3)).save(any());
     }
 }
