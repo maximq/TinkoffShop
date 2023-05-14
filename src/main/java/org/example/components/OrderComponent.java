@@ -49,7 +49,7 @@ public class OrderComponent {
                              String productName) {
         var user = userComponent.getOrCreateUser(userName, userPhone);
         var product = productComponent.getProductByName(productName);
-        var account = accountComponent.getAccountByUserId(user.getId());
+        var account = accountComponent.getOrCreateAccount(user.getId());
 
         if ((product.getProductType() == ProductType.GOOD) && !(account.getBalance() < product.getPrice())) {
             if (product.getRemainder() < 1) {
