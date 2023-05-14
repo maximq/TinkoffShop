@@ -13,12 +13,12 @@ public class AccountComponent {
     @Autowired
     AccountRepository accountRepository;
 
-    public Account getOrCreateAccount(Long userId) {
+    public Account getOrCreateAccount(Long userId, int balance) {
         var account = accountRepository.findByUserId(userId);
         if (account != null) {
             return account;
         }
-        var newAccount = new Account(userId);
+        var newAccount = new Account(userId, balance);
         accountRepository.save(newAccount);
         return newAccount;
     }
@@ -39,7 +39,7 @@ public class AccountComponent {
     }
 
     public String accountRefill(Long userId, int balance) {
-        var account = this.getOrCreateAccount(userId);
+        var account = this.getOrCreateAccount(userId, balance);
         var newBalance = account.getBalance()+balance;
         account.setBalance(newBalance);
         accountRepository.save(account);
