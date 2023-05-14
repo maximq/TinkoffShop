@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.lang.UnsupportedOperationException;
 
 @Component
 public class OrderComponent {
@@ -22,6 +24,9 @@ public class OrderComponent {
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    AccountComponent accountComponent;
 
 
     public List<Order> getListOfOrders() {
@@ -44,8 +49,9 @@ public class OrderComponent {
                              String productName) {
         var user = userComponent.getOrCreateUser(userName, userPhone);
         var product = productComponent.getProductByName(productName);
+        var account = accountComponent.getAccountByUserId(user.getId());
 
-        if (product.getProductType() == ProductType.GOOD) {
+        if ((product.getProductType() == ProductType.GOOD) && !(account.getBalance() < product.getPrice())) {
             if (product.getRemainder() < 1) {
                 throw new IllegalStateException(
                         String.format(
@@ -55,6 +61,13 @@ public class OrderComponent {
             }
             product.setRemainder(product.getRemainder() - 1);
             productRepository.save(product);
+        }
+        if (account.getBalance()<product.getPrice()) {
+            throw new UnsupportedOperationException(
+                    String.format(
+                            "Недостаточно средств, текущий баланс '%s'", account.getBalance()
+                    )
+            );
         }
         var order = new Order(user.getId(), product.getId());
         orderRepository.save(order);
