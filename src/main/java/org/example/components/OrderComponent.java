@@ -69,7 +69,8 @@ public class OrderComponent {
         if (account.getBalance()<product.getPrice()) {
             throw new UnsupportedOperationException(
                     String.format(
-                            "Недостаточно средств, текущий баланс '%s'", account.getBalance()
+                            "Недостаточно средств на аккаунте '%s', текущий баланс '%s'",
+                            account.getUserId(), account.getBalance()
                     )
             );
         }
@@ -77,6 +78,7 @@ public class OrderComponent {
         orderRepository.save(order);
         double newBalance = account.getBalance()-product.getPrice();
         account.setBalance((int) newBalance);
+        accountRepository.save(account);
         return order;
     }
 
