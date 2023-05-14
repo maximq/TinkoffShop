@@ -2,7 +2,6 @@ package org.example.components;
 
 import org.example.entity.Order;
 import org.example.enums.ProductType;
-import org.example.repositories.AccountRepository;
 import org.example.repositories.OrderRepository;
 import org.example.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,6 @@ public class OrderComponent {
     @Autowired
     AccountComponent accountComponent;
 
-    @Autowired
-    AccountRepository accountRepository;
-
 
     public List<Order> getListOfOrders() {
         return orderRepository.findAll();
@@ -53,7 +49,7 @@ public class OrderComponent {
                              String productName) {
         var user = userComponent.getOrCreateUser(userName, userPhone);
         var product = productComponent.getProductByName(productName);
-        var account = accountComponent.getOrCreateAccount(user.getId());
+        var account = accountComponent.getAccountByUserId(user.getId());
 
         if ((product.getProductType() == ProductType.GOOD) && !(account.getBalance() < product.getPrice())) {
             if (product.getRemainder() < 1) {
@@ -69,16 +65,12 @@ public class OrderComponent {
         if (account.getBalance()<product.getPrice()) {
             throw new UnsupportedOperationException(
                     String.format(
-                            "Недостаточно средств на аккаунте '%s', текущий баланс '%s'",
-                            account.getUserId(), account.getBalance()
+                            "Недостаточно средств, текущий баланс '%s'", account.getBalance()
                     )
             );
         }
         var order = new Order(user.getId(), product.getId());
         orderRepository.save(order);
-        double newBalance = account.getBalance()-product.getPrice();
-        account.setBalance((int) newBalance);
-        accountRepository.save(account);
         return order;
     }
 
