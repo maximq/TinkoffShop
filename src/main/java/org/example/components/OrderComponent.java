@@ -2,6 +2,7 @@ package org.example.components;
 
 import org.example.entity.Order;
 import org.example.enums.ProductType;
+import org.example.repositories.AccountRepository;
 import org.example.repositories.OrderRepository;
 import org.example.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class OrderComponent {
 
     @Autowired
     AccountComponent accountComponent;
+
+    @Autowired
+    AccountRepository accountRepository;
 
 
     public List<Order> getListOfOrders() {
@@ -71,6 +75,8 @@ public class OrderComponent {
         }
         var order = new Order(user.getId(), product.getId());
         orderRepository.save(order);
+        double newBalance = account.getBalance()-product.getPrice();
+        account.setBalance((int) newBalance);
         return order;
     }
 
