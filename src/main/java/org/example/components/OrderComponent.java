@@ -55,7 +55,7 @@ public class OrderComponent {
         var product = productComponent.getProductByName(productName);
         var account = accountComponent.getOrCreateAccount(user.getId());
 
-        if ((product.getProductType() == ProductType.GOOD) && !(account.getBalance() < product.getPrice())) {
+        if ((product.getProductType() == ProductType.GOOD) && (account.getBalance() >= product.getPrice())) {
             if (product.getRemainder() < 1) {
                 throw new IllegalStateException(
                         String.format(
