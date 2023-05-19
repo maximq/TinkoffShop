@@ -13,6 +13,9 @@ public class AccountComponent {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    UserComponent userComponent;
+
     public Account getOrCreateAccount(Long userId) {
         var account = accountRepository.findByUserId(userId);
         if (account != null) {
@@ -38,7 +41,8 @@ public class AccountComponent {
                         "Аккаунта с userId '%s' не существует!", userId));
     }
 
-    public String accountRefill(Long userId, int balance) {
+    public String accountRefill(String phone, int balance) {
+        var userId = userComponent.getUserByPhone(phone).getId();
         var account = this.getOrCreateAccount(userId);
         var newBalance = account.getBalance()+balance;
         account.setBalance(newBalance);

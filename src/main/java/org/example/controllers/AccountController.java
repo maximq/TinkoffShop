@@ -39,8 +39,7 @@ public class AccountController {
     @PostMapping("accountRefill")
     @Operation(summary = "Пополнение счёта")
     public String accountRefill(@RequestParam String phone, @RequestParam int balance){
-        var user = userComponent.getUserByPhone(phone);
-        return accountComponent.accountRefill(user.getId(), balance);
+        return accountComponent.accountRefill(phone, balance);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
