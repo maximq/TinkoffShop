@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.example.components.AccountComponent;
 import org.example.components.UserComponent;
 import org.example.entity.Account;
-import org.example.entity.User;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
