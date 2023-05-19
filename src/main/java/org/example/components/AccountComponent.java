@@ -28,9 +28,9 @@ public class AccountComponent {
     }
 
     public Account getAccountByUserId(Long userId) {
-        var user = accountRepository.findByUserId(userId);
-        if (user != null) {
-            return user;
+        var account = accountRepository.findByUserId(userId);
+        if (account != null) {
+            return account;
         }
 
         throw new NoSuchElementException(
