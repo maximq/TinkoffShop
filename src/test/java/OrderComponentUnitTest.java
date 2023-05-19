@@ -72,7 +72,7 @@ public class OrderComponentUnitTest extends AbstractTest{
 
         orderComponent.createOrder(userName, userPhone, productName);
 
-        Mockito.verify(orderRepository, Mockito.times(1)).save(any());
-        Mockito.verify(accountRepository, Mockito.times(1)).save(any());
+        Mockito.verify(orderRepository).save(any());
+        Mockito.verify(accountRepository).save(any());
     }
 }
