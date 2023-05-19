@@ -74,14 +74,14 @@ public class OrderComponentTest extends AbstractTest {
         var authorId = order.getAuthorId();
         var productId = order.getProductId();
 
+        var result = accountComponent.getOrCreateAccount(userComponent.getOrCreateUser(userName, userPhone).getId()).getBalance();
+
         var user = userRepository.findById(authorId);
         assertThat(user).isNotEmpty();
         assertThat(user.get().getPhone()).isNotEmpty();
         assertThat(user.get().getName()).isNotEmpty();
         assertThat(product.getId()).isEqualTo(productId);
-        assertThat(startBalance).isEqualTo(
-                startBalance+accountComponent.getOrCreateAccount(userComponent.getOrCreateUser(userName, userPhone).getId()).getBalance()
-        );
+        assertThat(startBalance).isEqualTo(startBalance+result);
     }
 
     @Test
