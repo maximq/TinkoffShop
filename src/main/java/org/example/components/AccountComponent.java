@@ -43,7 +43,7 @@ public class AccountComponent {
 
     public String accountRefill(String phone, int balance) {
         var userId = userComponent.getUserByPhone(phone).getId();
-        var account = this.getOrCreateAccount(userId);
+        var account = accountRepository.findByUserId(userId);
         var newBalance = account.getBalance()+balance;
         account.setBalance(newBalance);
         accountRepository.save(account);

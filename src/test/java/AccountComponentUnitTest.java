@@ -14,8 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.spy;
 
 public class AccountComponentUnitTest extends AbstractTest{
     @Mock
@@ -44,17 +46,22 @@ public class AccountComponentUnitTest extends AbstractTest{
         //PRECONDITION
         var userName = "Oleg";
         var userPhone = "+79990001234";
+        var balance = 100;
 
         var user = new User();
+        user.setId(1L);
         user.setPhone(userPhone);
         user.setName(userName);
 
 
-        Mockito.when(userComponent.getOrCreateUser(userName, userPhone)).thenReturn(user);
+        Mockito.when(userComponent.getUserByPhone(userPhone)).thenReturn(user);
 
-        accountComponent.getOrCreateAccount(user.getId());
-        accountComponent.accountRefill(user.getId(), 100);
+        var account = accountComponent.getOrCreateAccount(user.getId());
+        Mockito.when(accountComponent.getOrCreateAccount(user.getId())).thenReturn(account);
+        Mockito.when(accountRepository.findByUserId(user.getId())).thenReturn(account);
 
-        Mockito.verify(accountRepository, Mockito.times(3)).save(any());
+        accountComponent.accountRefill(userPhone, balance);
+
+        Mockito.verify(accountRepository, Mockito.times(2)).save(any());
     }
 }
